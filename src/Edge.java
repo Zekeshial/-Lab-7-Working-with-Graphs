@@ -1,15 +1,15 @@
 import java.util.Objects;
 
 public class Edge<T> {
-    private final int weight;
+    private final double weight;
     private final T vertex;
 
-    public Edge(int weight, T vertex) {
+    public Edge(double weight, T vertex) {
         this.weight = weight;
         this.vertex = vertex;
     }
 
-    public int getWeight() {
+    public double getWeight() {
         return weight;
     }
 
@@ -31,12 +31,14 @@ public class Edge<T> {
         Edge other = (Edge) obj;
 
         // 4. Compare relevant fields
-        return Objects.equals(vertex, other.vertex);
+        return weight == other.weight &&
+                Objects.equals(vertex, other.vertex);
     }
 
     @Override
     public int hashCode() {
-        // Use Objects.hash to safely compute hash values based on the vertex
-        return Objects.hash(vertex);
+        // Use Objects.hash to safely compute hash values based on the same fields used in equals()
+        return Objects.hash(weight, vertex);
     }
 }
+

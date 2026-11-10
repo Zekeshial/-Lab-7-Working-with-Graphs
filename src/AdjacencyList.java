@@ -90,7 +90,7 @@ public class AdjacencyList<T> {
         for (Map.Entry<T, ArrayList<Edge<T>> > entry : map.entrySet()) {
             System.out.print(entry.getKey() + " has connections to: ");
             for (Edge<T> edge : entry.getValue()) {
-                System.out.print("<" + edge.getVertex() + ", " + edge.getWeight() + ">");
+                System.out.print("<" + edge.getVertex() + ", " + edge.getWeight() + ">, ");
             }
             System.out.println();
         }
