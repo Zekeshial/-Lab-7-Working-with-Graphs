@@ -1,25 +1,25 @@
-import com.sun.security.jgss.GSSUtil;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-public class AdjacencyList<T> {
-    private final HashMap<T, ArrayList<Edge<T>>> map;
+public class AdjacencyList {
+    private final HashMap<String, ArrayList<Edge>> map;
 
     public AdjacencyList() {
-        this.map = new HashMap<T, ArrayList<Edge<T>>>();
+        this.map = new HashMap<String, ArrayList<Edge>>();
     }
 
 
-    public void addEdge(T vertex, Edge<T> edge) {
-        T other = edge.getVertex();
-        Edge<T> reversedEdge = new Edge<>(edge.getWeight(), vertex);
+    /**
+     * Adds a vertex with its edge the Adjacency List
+     * @param vertex The vertex of the point as a string
+     * @param edge and edge connected to that vertex.
+     */
+    public void addEdge(String vertex, Edge edge) {
+        String other = edge.getVertex();
+        Edge reversedEdge = new Edge(edge.getWeight(), vertex);
 
         // Make sure both endpoints exist
-        ArrayList<Edge<T>> fromList = map.computeIfAbsent(vertex, k -> new ArrayList<>());
-        ArrayList<Edge<T>> toList = map.computeIfAbsent(other, k -> new ArrayList<>());
+        ArrayList<Edge> fromList = map.computeIfAbsent(vertex, k -> new ArrayList<>());
+        ArrayList<Edge> toList = map.computeIfAbsent(other, k -> new ArrayList<>());
 
         if (fromList.contains(edge)) {
             System.out.println("This connection already exists");
@@ -30,10 +30,13 @@ public class AdjacencyList<T> {
         if (!vertex.equals(other) && !toList.contains(reversedEdge)) {            // avoid a duplicate entry for self-loops
             toList.add(reversedEdge);
         }
-        System.out.println("Connection has been added");
     }
 
-    public void addVertex(T vertex) {
+    /**
+     * Adds just a vertex to the Adjacency List
+     * @param vertex The vertex you want to add as a string
+     */
+    public void addVertex(String vertex) {
         if (map.containsKey(vertex)) {
             System.out.println("Vertex already exists");
         } else {
@@ -42,9 +45,13 @@ public class AdjacencyList<T> {
         }
     }
 
-    public void removeVertex(T vertex) {
+    /**
+     * Removes a vertex with its edges and connections from other edges in an Adjacency List
+     * @param vertex The vertex you wish to remove as a String.
+     */
+    public void removeVertex(String vertex) {
 
-            ArrayList<Edge<T>> removedEdges = map.remove(vertex);
+            ArrayList<Edge> removedEdges = map.remove(vertex);
 
             if (removedEdges == null) {
                 System.out.println("Vertex doesn't exist");
@@ -52,8 +59,8 @@ public class AdjacencyList<T> {
             }
 
             // Undirected graph: only the neighbors of `vertex` can have an edge back to it
-            for (Edge<T> edge : removedEdges) {
-                ArrayList<Edge<T>> neighborEdges = map.get(edge.getVertex());
+            for (Edge edge : removedEdges) {
+                ArrayList<Edge> neighborEdges = map.get(edge.getVertex());
                 if (neighborEdges != null) {
                     neighborEdges.removeIf(e -> e.getVertex().equals(vertex));
                 }
@@ -62,9 +69,14 @@ public class AdjacencyList<T> {
             System.out.println("Vertex has been removed");
         }
 
-    public void removeEdge(T vertex, Edge<T> edge) {
-        T otherVertex = edge.getVertex();
-        Edge<T> reversedEdge = new Edge<>(edge.getWeight(), vertex);
+    /**
+     * Removes an Edge from an adjacency List
+     * @param vertex The vertex associated with the edge
+     * @param edge The edge you wish to remove associated to that vertex.
+     */
+    public void removeEdge(String vertex, Edge edge) {
+        String otherVertex = edge.getVertex();
+        Edge reversedEdge = new Edge(edge.getWeight(), vertex);
 
         if (!map.containsKey(vertex)) {
             System.out.println("Vertex doesn't exist");
@@ -82,19 +94,65 @@ public class AdjacencyList<T> {
 
     }
 
-    public Map<T, ArrayList<Edge<T>>> getMap() {
+    /**
+     * returns the Adjacency List as an unmodifiable collection
+     * @return the Adjacency List
+     */
+    public Map<String, ArrayList<Edge>> getMap() {
         return Collections.unmodifiableMap(map);
     }
 
+    /**
+     * Print out the Adjacency List.
+     */
     public void printAdjacencyList() {
-        for (Map.Entry<T, ArrayList<Edge<T>> > entry : map.entrySet()) {
+        for (Map.Entry<String, ArrayList<Edge> > entry : map.entrySet()) {
             System.out.print(entry.getKey() + " has connections to: ");
-            for (Edge<T> edge : entry.getValue()) {
+            for (Edge edge : entry.getValue()) {
                 System.out.print("<" + edge.getVertex() + ", " + edge.getWeight() + ">, ");
             }
             System.out.println();
         }
     }
+
+    /**
+     * Does a Breath first search over a data structure
+     * @param startVertex the starting vertex you wish to look at in the data structure
+     * @return The result of the search in the form [(first point), (second point), ... (last point)]
+     */
+    public String BFS(String startVertex) {
+        if (!map.containsKey(startVertex)) {
+            System.out.println("The starting vertex was not found in the graph");
+            return null;
+        }
+
+
+        Queue<String> open = new ArrayDeque<>();
+        Set<String> explored = new HashSet<>();
+        ArrayList<String> listToPrint = new ArrayList<>();
+
+        open.add(startVertex);
+
+
+        while(!open.isEmpty()) {
+            String v = open.peek();
+            open.remove();
+            if (!explored.contains(v)) {
+                explored.add(v);
+                listToPrint.add(v);
+                for(Edge vertex : map.get(v)) {
+                    String vertex2 = vertex.getVertex();
+                    if (!explored.contains(vertex2)) {
+                        open.add(vertex2);
+                    }
+                }
+            }
+        }
+        return listToPrint.toString();
+    }
+
+
+
 
 
 

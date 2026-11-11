@@ -1,10 +1,10 @@
 import java.util.Objects;
 
-public class Edge<T> {
+public class Edge {
     private final double weight;
-    private final T vertex;
+    private final String vertex;
 
-    public Edge(double weight, T vertex) {
+    public Edge(double weight, String vertex) {
         this.weight = weight;
         this.vertex = vertex;
     }
@@ -14,7 +14,7 @@ public class Edge<T> {
     }
 
 
-    public T getVertex() {
+    public String getVertex() {
         return vertex;
     }
 
