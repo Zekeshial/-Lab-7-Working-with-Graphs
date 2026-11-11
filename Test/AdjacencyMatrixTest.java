@@ -156,7 +156,7 @@ class AdjacencyMatrixTest {
         assertTrue(am.hasEdge("A", "C"));
     }
 
-    //testing if an edge doesn't exists
+    //testing if an edge doesn't exist
     @Test
     void hasEdgeTest2() {
         Edge e1 = new Edge(2, "B");

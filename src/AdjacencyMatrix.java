@@ -3,23 +3,23 @@ import java.util.*;
 public class AdjacencyMatrix {
 
     private double[][] adjacencyMatrix;
-    private int numberOfVerticies;
+    private int numberOfVertices;
     private static final int noEdge = 0;
 
     public AdjacencyMatrix(int numberOfVertices) {
-        this.numberOfVerticies = numberOfVertices;
+        this.numberOfVertices = numberOfVertices;
         this.adjacencyMatrix = new double[numberOfVertices][numberOfVertices];
     }
 
     /**
-     * Converts a String into a int
-     * @param vertex the vertex you want to convert into a int
+     * Converts a String into an int
+     * @param vertex the vertex you want to convert into an int
      * @return the integer result of the vertex
      */
     private int toIndex(String vertex) {
         char v = vertex.charAt(0);
         int index = Character.toUpperCase(v) - 'A';
-        if (index < 0 || index >= numberOfVerticies) {
+        if (index < 0 || index >= numberOfVertices) {
             throw new IllegalArgumentException("Invalid vertex: " + v);
         }
         return index;
@@ -63,15 +63,15 @@ public class AdjacencyMatrix {
     public void printAdjacencyMatrix() {
         // Header row of letters
         System.out.print("   ");
-        for (int i = 0; i < numberOfVerticies; i++) {
+        for (int i = 0; i < numberOfVertices; i++) {
             System.out.printf("%6c", (char) ('A' + i));
         }
         System.out.println();
 
         // Each row, labeled with its letter
-        for (int i = 0; i < numberOfVerticies; i++) {
+        for (int i = 0; i < numberOfVertices; i++) {
             System.out.printf("%6c", (char) ('A' + i));
-            for (int j = 0; j < numberOfVerticies; j++) {
+            for (int j = 0; j < numberOfVertices; j++) {
                 System.out.printf("%6.2f", adjacencyMatrix[i][j]);
             }
             System.out.println();
@@ -100,7 +100,7 @@ public class AdjacencyMatrix {
             int current = toIndex(v);
             listToPrint.add(v);
 
-            for (int i = 0; i < numberOfVerticies; i++) {
+            for (int i = 0; i < numberOfVertices; i++) {
                 String neighbor = String.valueOf((char) ('A' + i));
 
                     if (adjacencyMatrix[current][i] != noEdge && !explored.contains(neighbor)) {
