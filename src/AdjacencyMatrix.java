@@ -16,7 +16,7 @@ public class AdjacencyMatrix {
      * @param vertex the vertex you want to convert into an int
      * @return the integer result of the vertex
      */
-    private int toIndex(String vertex) {
+    public int toIndex(String vertex) {
         char v = vertex.charAt(0);
         int index = Character.toUpperCase(v) - 'A';
         if (index < 0 || index >= numberOfVertices) {

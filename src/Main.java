@@ -37,18 +37,28 @@ public class Main {
 
         int sizeOfDataSet = 0;
         try {
-            ReadFile fileRes = new ReadFile(userInput);
+            ReadFile fileRes = new ReadFile("DataTest.txt");
             Set<String> explored = new HashSet<>();
             for (String line : fileRes.getLines()) {
                 String[] words = line.split("\\s+");
                 explored.add(words[0]);
                 explored.add(words[1]);
             }
-            sizeOfDataSet = explored.size();
+            char largest = Character.MIN_VALUE;
+            for (String letter : explored) {
+                if (letter.charAt(0) > largest) {
+                    largest = letter.charAt(0);
+                }
+            }
+
+            largest = Character.toUpperCase(largest);
+
+            sizeOfDataSet = largest - 'A' + 1;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
+
 
         AdjacencyList al = new AdjacencyList();
         AdjacencyMatrix am = new AdjacencyMatrix(sizeOfDataSet);

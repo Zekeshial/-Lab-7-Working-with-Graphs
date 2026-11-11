@@ -237,4 +237,24 @@ class AdjacencyMatrixTest {
 
 
     }
+
+    @Test
+    void toIndex() {
+        AdjacencyMatrix am = new AdjacencyMatrix(19);
+        int actual = am.toIndex("A");
+        int expected = 0;
+
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    void toIndexTest2() {
+        AdjacencyMatrix am = new AdjacencyMatrix(18);
+        int actual = am.toIndex("S");
+        int expected = 18;
+
+        assertEquals(expected, actual);
+
+    }
 }
