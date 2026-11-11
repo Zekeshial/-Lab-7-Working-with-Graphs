@@ -202,10 +202,17 @@ class AdjacencyMatrixTest {
                 explored.add(words[0]);
                 explored.add(words[1]);
             }
-            System.out.println(explored);
-            AdjacencyMatrix am = new AdjacencyMatrix(explored.size());
+            char largest = Character.MIN_VALUE;
+            for (String letter : explored) {
+                if (letter.charAt(0) > largest) {
+                    largest = letter.charAt(0);
+                }
+            }
+
+            largest = Character.toUpperCase(largest);
+            AdjacencyMatrix am = new AdjacencyMatrix(largest - 'A' + 1);
             fileRes.addVertexToAdjacencyMatrixFromTxt("Data.txt", am);
-            am.printAdjacencyMatrix();
+            assertTrue(am.printAdjacencyMatrix());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
@@ -223,11 +230,53 @@ class AdjacencyMatrixTest {
                 explored.add(words[0]);
                 explored.add(words[1]);
             }
-            AdjacencyMatrix am = new AdjacencyMatrix(explored.size());
+            char largest = Character.MIN_VALUE;
+            for (String letter : explored) {
+                if (letter.charAt(0) > largest) {
+                    largest = letter.charAt(0);
+                }
+            }
+
+            largest = Character.toUpperCase(largest);
+            AdjacencyMatrix am = new AdjacencyMatrix(largest - 'A' + 1);
             fileRes.addVertexToAdjacencyMatrixFromTxt("Data.txt", am);
 
             String actual = am.BFS("G");
             String expected = "[G, E, J, B, C, H, A, F, I, D]";
+            assertEquals(expected, actual);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+
+
+    }
+
+    //Tests if the best first search algorithm prints correctly
+    @Test
+    void BFSTest2() {
+        try {
+            ReadFile fileRes = new ReadFile("Datatest.txt");
+            Set<String> explored = new HashSet<>();
+            for (String line : fileRes.getLines()) {
+                String[] words = line.split("\\s+");
+                explored.add(words[0]);
+                explored.add(words[1]);
+            }
+            char largest = Character.MIN_VALUE;
+            for (String letter : explored) {
+                if (letter.charAt(0) > largest) {
+                    largest = letter.charAt(0);
+                }
+            }
+
+            largest = Character.toUpperCase(largest);
+            AdjacencyMatrix am = new AdjacencyMatrix(largest - 'A' + 1);
+            fileRes.addVertexToAdjacencyMatrixFromTxt("Datatest.txt", am);
+
+            String actual = am.BFS("F");
+            String expected = "[F, B, C, I, J, S, E, G, K, L, A, H, M, D]";
             assertEquals(expected, actual);
 
         } catch (Exception e) {
@@ -250,7 +299,7 @@ class AdjacencyMatrixTest {
 
     @Test
     void toIndexTest2() {
-        AdjacencyMatrix am = new AdjacencyMatrix(18);
+        AdjacencyMatrix am = new AdjacencyMatrix(19);
         int actual = am.toIndex("S");
         int expected = 18;
 

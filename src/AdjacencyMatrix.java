@@ -34,7 +34,7 @@ public class AdjacencyMatrix {
         int i = toIndex(vertex);
         int j = toIndex(e.getVertex());
         adjacencyMatrix[i][j] = e.getWeight();
-        adjacencyMatrix[j][i] = e.getWeight(); // remove this line for a directed graph
+        adjacencyMatrix[j][i] = e.getWeight();
     }
 
     /**
@@ -60,7 +60,7 @@ public class AdjacencyMatrix {
     /**
      * Prints out the Adjacency Matrix
      */
-    public void printAdjacencyMatrix() {
+    public boolean printAdjacencyMatrix() {
         // Header row of letters
         System.out.print("   ");
         for (int i = 0; i < numberOfVertices; i++) {
@@ -76,6 +76,8 @@ public class AdjacencyMatrix {
             }
             System.out.println();
         }
+
+        return true;
     }
 
     /**
