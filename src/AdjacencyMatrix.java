@@ -5,46 +5,49 @@ public class AdjacencyMatrix {
     private double[][] adjacencyMatrix;
     private int numberOfVertices;
     private static final int noEdge = 0;
+    private ArrayList<String> vertices;
+    private Set<String> existingVertices;
 
     public AdjacencyMatrix(int numberOfVertices) {
         this.numberOfVertices = numberOfVertices;
         this.adjacencyMatrix = new double[numberOfVertices][numberOfVertices];
+        this.vertices = new ArrayList<String>();
+        this.existingVertices = new HashSet<>();
     }
 
     /**
-     * Converts a String into an int
-     * @param vertex the vertex you want to convert into an int
-     * @return the integer result of the vertex
-     */
-    public int toIndex(String vertex) {
-        char v = vertex.charAt(0);
-        int index = Character.toUpperCase(v) - 'A';
-        if (index < 0 || index >= numberOfVertices) {
-            throw new IllegalArgumentException("Invalid vertex: " + v);
-        }
-        return index;
-    }
-
-    /**
-     * Adds an edge to an Adjacency Matrix
+     * Adds a weight to the adjacency matrix
      * @param vertex the vertex you wish to add as a string
      * @param e the edge you wish to add as an edge object
      */
     public void addEdge(String vertex, Edge e) {
-        int i = toIndex(vertex);
-        int j = toIndex(e.getVertex());
+        if (!existingVertices.contains(vertex)) {
+            existingVertices.add(vertex);
+            vertices.add(vertex);
+        }
+
+        if (!existingVertices.contains(e.getVertex())) {
+            existingVertices.add(e.getVertex());
+            vertices.add(e.getVertex());
+        }
+
+        int i = vertices.indexOf(vertex);
+        int j = vertices.indexOf(e.getVertex());
         adjacencyMatrix[i][j] = e.getWeight();
         adjacencyMatrix[j][i] = e.getWeight();
     }
 
     /**
-     * Gives you the weight at a specific point in the data structure
+     * Gives you the weight at a specific point in the data structure. If the weight doesn't exist it returns 0.
      * @param from The starting String you a going from.
      * @param to The String you wish to go to.
      * @return The weight at the specific point
      */
     public double getWeight(String from, String to) {
-        return adjacencyMatrix[toIndex(from)][toIndex(to)];
+        if (existingVertices.contains(from) && existingVertices.contains(to)) {
+            return adjacencyMatrix[vertices.indexOf(from)][vertices.indexOf(to)];
+        }
+        return noEdge;
     }
 
     /**
@@ -64,13 +67,13 @@ public class AdjacencyMatrix {
         // Header row of letters
         System.out.print("   ");
         for (int i = 0; i < numberOfVertices; i++) {
-            System.out.printf("%6c", (char) ('A' + i));
+            System.out.printf("%6s", vertices.get(i));
         }
         System.out.println();
 
         // Each row, labeled with its letter
         for (int i = 0; i < numberOfVertices; i++) {
-            System.out.printf("%6c", (char) ('A' + i));
+            System.out.printf("%6s", vertices.get(i));
             for (int j = 0; j < numberOfVertices; j++) {
                 System.out.printf("%6.2f", adjacencyMatrix[i][j]);
             }
@@ -92,22 +95,21 @@ public class AdjacencyMatrix {
         Set<String> explored = new HashSet<>();
         Queue<String> open = new LinkedList<>();
 
-        String start = String.valueOf((char) (('A' + toIndex(startVertex))));
 
-        open.add(start);
-        explored.add(start);
+        open.add(startVertex);
+        explored.add(startVertex);
 
         while (!open.isEmpty()) {
             String v = open.remove();
-            int current = toIndex(v);
+            int current = vertices.indexOf(v);
             listToPrint.add(v);
 
             for (int i = 0; i < numberOfVertices; i++) {
-                String neighbor = String.valueOf((char) ('A' + i));
+                String neighbor = vertices.get(i);
 
                     if (adjacencyMatrix[current][i] != noEdge && !explored.contains(neighbor)) {
-                        explored.add(String.valueOf((char) ('A' + i)));
-                        open.add(String.valueOf((char) ('A' + i)));
+                        explored.add(vertices.get(i));
+                        open.add(vertices.get(i));
                     }
                 }
             }

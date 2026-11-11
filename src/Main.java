@@ -1,4 +1,4 @@
-import java.sql.SQLOutput;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -44,16 +44,7 @@ public class Main {
                 explored.add(words[0]);
                 explored.add(words[1]);
             }
-            char largest = Character.MIN_VALUE;
-            for (String letter : explored) {
-                if (letter.charAt(0) > largest) {
-                    largest = letter.charAt(0);
-                }
-            }
-
-            largest = Character.toUpperCase(largest);
-
-            sizeOfDataSet = largest - 'A' + 1;
+            sizeOfDataSet = explored.size();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));

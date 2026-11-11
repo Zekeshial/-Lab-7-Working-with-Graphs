@@ -53,15 +53,9 @@ class ReadFileTest {
                 explored.add(words[0]);
                 explored.add(words[1]);
             }
-            char largest = Character.MIN_VALUE;
-            for (String letter : explored) {
-                if (letter.charAt(0) > largest) {
-                    largest = letter.charAt(0);
-                }
-            }
-            System.out.println(largest - 'A' + 1);
 
-            AdjacencyMatrix am = new AdjacencyMatrix(largest - 'A' + 1);
+
+            AdjacencyMatrix am = new AdjacencyMatrix(explored.size());
             assertTrue(fileRes.addVertexToAdjacencyMatrixFromTxt("DataTest.txt", am));
 
         } catch (Exception e) {
