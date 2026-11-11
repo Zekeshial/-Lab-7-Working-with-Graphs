@@ -37,7 +37,7 @@ public class Main {
 
         int sizeOfDataSet = 0;
         try {
-            ReadFile fileRes = new ReadFile("DataTest.txt");
+            ReadFile fileRes = new ReadFile(userInput);
             Set<String> explored = new HashSet<>();
             for (String line : fileRes.getLines()) {
                 String[] words = line.split("\\s+");
@@ -49,7 +49,6 @@ public class Main {
             System.out.println(e.getMessage());
             System.out.println(Arrays.toString(e.getStackTrace()));
         }
-
 
         AdjacencyList al = new AdjacencyList();
         AdjacencyMatrix am = new AdjacencyMatrix(sizeOfDataSet);
